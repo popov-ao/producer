@@ -1,0 +1,58 @@
+application:
+  topics:
+    first: first-kafka-topic
+
+spring:
+  application:
+    name: producer
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: mysecretpassword
+    hikari: # https://github.com/brettwooldridge/HikariCP#gear-configuration-knobs-baby
+      connectionTimeout: 20000 #20 seconds
+      idleTimeout: 600000 #10 minutes
+      maxLifetime: 1800000 #30 minutes
+      maximumPoolSize: 10
+      minimumIdle: 2
+      keepaliveTime: 60000 #1 minute
+      poolName: ${APP_NAME:project}
+  kafka:
+    ssl:
+      protocol: TLSv1.3
+    properties:
+      auto.register.schemas: true
+      bootstrap.servers: localhost:9092
+      schema.registry.url: http://localhost:8081
+      spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringSerializer
+      spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroSerializer
+    consumer:
+      group-id: diploma-id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      enable-auto-commit: false
+      max-poll-records: 3
+      properties:
+        specific.avro.reader: true
+        retry.backoff.ms: 100
+    producer:
+      compression-type: zstd
+      retries: 5
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        enable.idempotent: true
+        min.insync.replicas: 2
+    listener:
+      poll-timeout: 10000
+      ack-mode: manual_immediate
+  mustache:
+    check-template-location: false

@@ -1,0 +1,12 @@
+// name space defines where avro schema save in project
+@namespace("edu.diploma.avro.schema.product")
+protocol Product {
+	record Product {
+		long id;
+		string product_name;
+		string product_sku;
+		int quantity;
+		timestamp_ms created_at;
+		timestamp_ms updated_at;
+	}
+}

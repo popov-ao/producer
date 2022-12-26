@@ -1,0 +1,15 @@
+/*
+ * Comment for license information.
+ */
+/**
+ * Doc comment.
+ */
+@namespace("edu.diploma.warehouse.schema.audit")
+protocol Carton {
+	import idl "Product.avdl";
+	record Carton {
+		string product_sku;
+		string order_number;
+		array<Product> products;
+	}
+}

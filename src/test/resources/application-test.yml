@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: diploma
+  jpa:
+    hibernate:
+      ddl-auto: update
+    #    show-sql: true
+    properties:
+      hibernate.format_sql: true
+  kafka:
+    properties:
+      auto.register.schemas: true
+      bootstrap.servers: "${spring.embedded.kafka.brokers}"
+      schema.registry.url: "mock://testurl"
+      security.protocol: PLAINTEXT
+    listener:
+      concurrency: 1

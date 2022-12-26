@@ -22,5 +22,14 @@ bin/kafka-topics.sh --create --topic dip --bootstrap-server localhost:9092
 export CONFLUENT_HOME=/home/aopopov/confluent-7.2.1
 confluent local services schema-registry start
 ```
+- We must set multi schema schema-registry
+
+```
+curl -X PUT -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+    --data '{"compatibility": "NONE"}' \
+    http://localhost:8081/config
+```
+
+
 bin/kafka-console-consumer.sh --topic dip --from-beginning --bootstrap-server localhost:9092
 bin/kafka-avro-console-consumer --topic dip-avro --bootstrap-server localhost:9092  --from-beginning

@@ -1,6 +1,6 @@
 application:
   topics:
-    first: first-kafka-topic
+    first: t1-topic-dev
 
 spring:
   application:
